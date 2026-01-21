@@ -42,3 +42,19 @@ export async function saveSimulation(data: {
 
     return { success: true };
 }
+
+export async function getUserSimulations() {
+    const user = await getCurrentUser();
+
+    if (!user) return [];
+
+    const supabase = await createClient();
+
+    const { data } = await supabase
+        .from('simulations')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: true });
+
+    return data || [];
+}

@@ -1,12 +1,9 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { createClient } from '@/lib/supabase/server'
+import { getCurrentUser } from '@/services/auth/server'
 
 export async function Header() {
-    // Try to get user (will fail on localhost for now, but good for structure)
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-
+    const user = await getCurrentUser()
     const isDev = process.env.NODE_ENV === 'development'
 
     return (
@@ -22,6 +19,16 @@ export async function Header() {
                 <nav className="flex items-center gap-3">
                     {user ? (
                         <div className="flex items-center gap-4">
+                            {/* Premium Dashboard Link */}
+                            {user.isPremium && (
+                                <Link
+                                    href="/dashboard"
+                                    className="text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
+                                >
+                                    Dashboard
+                                </Link>
+                            )}
+
                             <span className="text-sm text-slate-300 hidden md:inline-block">{user.email}</span>
                             <form action="/auth/signout" method="post">
                                 <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white hover:bg-white/10">Sair</Button>
