@@ -44,7 +44,7 @@ export default async function Home() {
 
       {/* Footer / Trust */}
       <section className="py-12 text-center text-slate-500 text-sm">
-        <p>Valores simulados para 2024. Não dispensa consulta de contabilista.</p>
+        <p>Valores simulados para 2025. Não dispensa consulta de contabilista.</p>
       </section>
     </main>
   );
