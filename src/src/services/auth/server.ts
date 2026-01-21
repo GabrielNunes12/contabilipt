@@ -11,7 +11,9 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
         const supabase = await createClient();
         const { data: { user }, error } = await supabase.auth.getUser();
 
-        if (error) console.error("Debug - getCurrentUser Error:", error.message, error.status);
+        if (error && !error.message.includes("Auth session missing")) {
+            console.error("Debug - getCurrentUser Error:", error.message, error.status);
+        }
 
         if (!user) return null;
 
