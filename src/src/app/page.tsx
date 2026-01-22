@@ -1,5 +1,7 @@
 import { Calculator } from "@/components/calculator/Calculator";
+import { IRSSimulator } from "@/components/calculator/IRSSimulator";
 import { getCurrentUser } from "@/services/auth/server";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default async function Home() {
   let user = await getCurrentUser();
@@ -38,7 +40,22 @@ export default async function Home() {
       {/* Calculator Section */}
       <section className="py-12 -mt-10">
         <div className="container mx-auto px-4 max-w-5xl">
-          <Calculator user={user} />
+          <Tabs defaultValue="calculator" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-8 bg-slate-200/50 p-1">
+              <TabsTrigger value="calculator" className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-sm">
+                Freelancer vs Empresa
+              </TabsTrigger>
+              <TabsTrigger value="irs" className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-sm">
+                Simulador IRS 2025
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="calculator">
+              <Calculator user={user} />
+            </TabsContent>
+            <TabsContent value="irs">
+              <IRSSimulator user={user} />
+            </TabsContent>
+          </Tabs>
         </div>
       </section>
 

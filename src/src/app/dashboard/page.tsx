@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation';
 import { RateHistoryChart } from '@/components/dashboard/RateHistoryChart';
 import { DashboardStats } from '@/components/dashboard/DashboardStats';
 import { FiscalCalendar } from '@/components/dashboard/FiscalCalendar';
+import { TaxBracketAlert } from '@/components/dashboard/TaxBracketAlert';
+import { ExpenseOptimizationWidget } from '@/components/dashboard/ExpenseOptimizationWidget';
 
 export default async function DashboardPage() {
     const user = await getCurrentUser();
@@ -52,16 +54,18 @@ export default async function DashboardPage() {
                     <div className="lg:col-span-2">
                         <RateHistoryChart data={simulations} />
 
-                        {/* Placeholder for Tax Bracket Alert (Next Task) */}
-                        {/* <div className="mt-8"> <TaxBracketAlert /> </div> */}
+                        {/* Tax Bracket Alert */}
+                        <div className="mt-8">
+                            <TaxBracketAlert data={simulations} />
+                        </div>
                     </div>
 
                     {/* Sidebar Column */}
                     <div className="space-y-8">
                         <FiscalCalendar />
 
-                        {/* Placeholder for Expense Optimization (Next Task) */}
-                        {/* <ExpenseOptimizationWidget /> */}
+                        {/* Expense Optimization */}
+                        <ExpenseOptimizationWidget data={simulations} />
                     </div>
                 </div>
             </div>

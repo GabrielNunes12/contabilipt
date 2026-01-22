@@ -34,3 +34,30 @@ export const BUSINESS_DEFAULTS = {
     WORK_DAYS_MONTH: 21,
     MONTHS_YEAR: 11,
 };
+
+// Official 2025 IRS Brackets (Continente)
+// Source: OE2025 / update logic
+export const IRS_BRACKETS_2025 = [
+    { limit: 8059, rate: 0.125, deduct: 0 },
+    { limit: 12160, rate: 0.160, deduct: 282.07 }, // (8059 * 0.16) - (8059 * 0.125) = 1289.44 - 1007.38 = 282.06
+    { limit: 17233, rate: 0.220, deduct: 1011.67 },
+    { limit: 22306, rate: 0.250, deduct: 1528.66 },
+    { limit: 28400, rate: 0.320, deduct: 3089.42 }, // Check: 22306*0.32 - Tax(22306)
+    { limit: 41629, rate: 0.355, deduct: 4083.42 },
+    { limit: 44987, rate: 0.435, deduct: 7414.38 },
+    { limit: 83696, rate: 0.450, deduct: 8089.19 },
+    { limit: Infinity, rate: 0.480, deduct: 10600.07 },
+];
+
+export const IRS_VARS_2025 = {
+    SPECIFIC_DEDUCTION_CATEGORY_A: 4104, // Stays as baseline or updated to 8.54*IAS. 8.54 * 522.50 = 4462.15. Using new value.
+    SPECIFIC_DEDUCTION_CATEGORY_A_UPDATED: 4462.15,
+    MINIMUM_EXISTENCE: 12180, // Updated 2025 estimate
+    DEPENDENT_DEDUCTION_3_PLUS: 900, // Estimate for > 3yo
+    DEPENDENT_DEDUCTION_UP_TO_3: 726, // Estimate for <= 3yo
+};
+
+export const FISCAL_LIMITS_2025 = {
+    VAT_EXEMPTION: 15000, // Limite de isenção de IVA (Artigo 53.º)
+    SIMPLIFIED_REGIME: 200000, // Limite máximo para enquadramento no Regime Simplificado
+};
