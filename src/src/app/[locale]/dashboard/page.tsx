@@ -7,6 +7,7 @@ import { DashboardStats } from '@/components/dashboard/DashboardStats';
 import { FiscalCalendar } from '@/components/dashboard/FiscalCalendar';
 import { TaxBracketAlert } from '@/components/dashboard/TaxBracketAlert';
 import { ExpenseOptimizationWidget } from '@/components/dashboard/ExpenseOptimizationWidget';
+import { SubscriptionManager } from '@/components/dashboard/SubscriptionManager';
 import { getTranslations } from 'next-intl/server';
 
 export default async function DashboardPage() {
@@ -64,6 +65,7 @@ export default async function DashboardPage() {
 
                     {/* Sidebar Column */}
                     <div className="space-y-8">
+                        <SubscriptionManager isPremium={user.isPremium} />
                         <FiscalCalendar />
 
                         {/* Expense Optimization */}

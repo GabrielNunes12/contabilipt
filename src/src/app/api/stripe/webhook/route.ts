@@ -69,6 +69,36 @@ export async function POST(request: Request) {
                 }
             }
             break;
+
+        case 'customer.subscription.deleted':
+            const sub = event.data.object as Stripe.Subscription;
+            console.log('Subscription canceled:', sub.id);
+            // We need to find the user by Stripe Customer ID or email if stored in metadata
+            // For this simple implementation, we might need to rely on email again if not storing customer_id
+            // NOTE: Real implementation should store stripe_customer_id in profile.
+
+            // Attempt to find user by looking up customer first? No, we don't have db access to map customer->user easily without column.
+            // We can retrieve customer details from Stripe to get email.
+            const customerId = typeof sub.customer === 'string' ? sub.customer : sub.customer.id;
+            const customer = await stripe.customers.retrieve(customerId) as Stripe.Customer;
+
+            if (customer.email) {
+                const { data: user } = await supabaseAdmin
+                    .from('profiles')
+                    .select('id')
+                    .eq('email', customer.email)
+                    .single();
+
+                if (user) {
+                    await supabaseAdmin
+                        .from('profiles')
+                        .update({ is_premium: false })
+                        .eq('id', user.id);
+                    console.log(`User ${user.id} subscription canceled. Premium removed.`);
+                }
+            }
+            break;
+
         default:
             console.log(`Unhandled event type ${event.type}`);
     }

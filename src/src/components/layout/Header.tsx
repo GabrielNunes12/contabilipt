@@ -39,7 +39,7 @@ export async function Header() {
                                 )}
 
                                 <span className="text-sm text-slate-300 hidden md:inline-block">{user.email}</span>
-                                <form action="/auth/signout" method="post">
+                                <form action="/api/auth/signout" method="post">
                                     <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white hover:bg-white/10">{t('logout')}</Button>
                                 </form>
                             </div>

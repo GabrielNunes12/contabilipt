@@ -109,6 +109,19 @@
         "section3Title": "3. Segurança e RGPD",
         "section3Content": "Utilizamos encriptação padrão da indústria para proteger as suas informações financeiras sensíveis. De acordo com o RGPD, tem o direito de aceder, retificar ou eliminar os seus dados pessoais a qualquer momento."
     },
+    "SubscriptionManager": {
+        "title": "Gestão de Subscrição",
+        "active": "Ativa",
+        "canceled": "Cancelada",
+        "plan": "Plano Premium",
+        "cancelBtn": "Cancelar Subscrição",
+        "renewBtn": "Renovar Subscrição",
+        "confirmCancel": "Tens a certeza que queres cancelar? Perderás acesso às funcionalidades Premium no final do período de faturação.",
+        "successCancel": "Subscrição cancelada com sucesso.",
+        "errorCancel": "Erro ao cancelar subscrição.",
+        "activeDesc": "A tua subscrição está ativa. Próxima faturação: ",
+        "canceledDesc": "A tua subscrição está cancelada. Acesso até: "
+    },
     "Calculator": {
         "title": "Teus Dados",
         "description": "Simula o teu cenário atual.",

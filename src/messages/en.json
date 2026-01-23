@@ -109,6 +109,19 @@
         "section3Title": "3. Security & GDPR",
         "section3Content": "We use industry-standard encryption to protect your sensitive financial information. As per GDPR, you have the right to access, rectify, or delete your personal data at any time."
     },
+    "SubscriptionManager": {
+        "title": "Subscription Management",
+        "active": "Active",
+        "canceled": "Canceled",
+        "plan": "Premium Plan",
+        "cancelBtn": "Cancel Subscription",
+        "renewBtn": "Renew Subscription",
+        "confirmCancel": "Are you sure you want to cancel? You will lose access to Premium features at the end of the billing period.",
+        "successCancel": "Subscription canceled successfully.",
+        "errorCancel": "Error canceling subscription.",
+        "activeDesc": "Your subscription is active. Next billing date: ",
+        "canceledDesc": "Your subscription is canceled. Access until: "
+    },
     "Calculator": {
         "title": "Your Data",
         "description": "Simulate your current scenario.",
