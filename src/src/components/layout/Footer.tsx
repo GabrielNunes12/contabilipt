@@ -22,8 +22,9 @@ export async function Footer() {
                         </Link>
                     </nav>
 
-                    <div className="text-sm text-slate-500">
-                        {t('rights')}
+                    <div className="text-sm text-slate-500 text-right">
+                        <div>{t('rights')}</div>
+                        <div className="text-xs text-slate-600 mt-1">{t('disclaimer')}</div>
                     </div>
                 </div>
             </div>
