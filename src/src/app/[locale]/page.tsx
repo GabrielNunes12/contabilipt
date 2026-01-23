@@ -2,19 +2,15 @@ import { Calculator } from "@/components/calculator/Calculator";
 import { IRSSimulator } from "@/components/calculator/IRSSimulator";
 import { getCurrentUser } from "@/services/auth/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getTranslations } from 'next-intl/server';
 
-export default async function Home() {
-  let user = await getCurrentUser();
+export default function Home() {
+  return <HomeContent />;
+}
 
-  // Dev Mode Bypass: Inject fake user to unlock premium UI
-  /*
-  if (!user && process.env.NODE_ENV === 'development') {
-    user = {
-      id: 'dev-mock-id',
-      email: 'dev@localhost',
-    };
-  }
-  */
+async function HomeContent() {
+  const t = await getTranslations('HomePage');
+  const user = await getCurrentUser();
 
   return (
     <main className="min-h-screen bg-slate-50">
@@ -26,12 +22,11 @@ export default async function Home() {
         <div className="container mx-auto px-4 max-w-5xl relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 text-white">
-              Contractor em Portugal? <br />
-              <span className="text-emerald-400 inline-block mt-2">Otimiza os teus impostos.</span>
+              {t('heroTitle')} <br />
+              <span className="text-emerald-400 inline-block mt-2">{t('heroSubtitle')}</span>
             </h1>
             <p className="text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl mx-auto">
-              Simulador fiscal avançado para profissionais de tecnologia com clientes internacionais.
-              Compara regimes, prevê custos e maximiza o teu rendimento líquido.
+              {t('heroDescription')}
             </p>
           </div>
         </div>
@@ -43,10 +38,10 @@ export default async function Home() {
           <Tabs defaultValue="calculator" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-8 bg-slate-200/50 p-1">
               <TabsTrigger value="calculator" className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-sm">
-                Freelancer vs Empresa
+                {t('tabCalculator')}
               </TabsTrigger>
               <TabsTrigger value="irs" className="data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-sm">
-                Simulador IRS 2025
+                {t('tabIRS')}
               </TabsTrigger>
             </TabsList>
             <TabsContent value="calculator">
@@ -61,7 +56,7 @@ export default async function Home() {
 
       {/* Footer / Trust */}
       <section className="py-12 text-center text-slate-500 text-sm">
-        <p>Valores simulados para 2025. Não dispensa consulta de contabilista.</p>
+        <p>{t('disclaimer')}</p>
       </section>
     </main>
   );

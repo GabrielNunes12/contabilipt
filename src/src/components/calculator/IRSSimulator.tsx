@@ -12,12 +12,14 @@ import { IRSInput, calculateIRS } from '@/lib/irs-calculator';
 import { saveIRSSimulation } from '@/services/irs/server';
 import { Euro, Users, PiggyBank, Save, Loader2, Info, Lock } from 'lucide-react';
 import { AuthUser } from '@/services/auth/types';
+import { useTranslations } from 'next-intl';
 
 interface IRSSimulatorProps {
     user: AuthUser | null;
 }
 
 export function IRSSimulator({ user }: IRSSimulatorProps) {
+    const t = useTranslations('IRSSimulator');
     const [isSaving, setIsSaving] = useState(false);
     const { register, watch, handleSubmit, setValue } = useForm<IRSInput>({
         defaultValues: {
@@ -54,7 +56,7 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
                 <div className="grid gap-8 md:grid-cols-2 lg:gap-12 filter blur-sm select-none opacity-50 pointer-events-none" aria-hidden="true">
                     <Card className="w-full shadow-lg border-slate-200 bg-white/50 backdrop-blur-sm">
                         <CardHeader>
-                            <CardTitle>Simulador IRS 2025</CardTitle>
+                            <CardTitle>{t('title')}</CardTitle>
                         </CardHeader>
                         <CardContent className="h-96" />
                     </Card>
@@ -68,33 +70,34 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
                             <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4 shadow-inner">
                                 <Lock className="w-8 h-8 text-emerald-600" />
                             </div>
-                            <CardTitle className="text-2xl font-bold text-slate-900">Acesso Exclusivo</CardTitle>
+                            <CardTitle className="text-2xl font-bold text-slate-900">{t('exclusiveAccess')}</CardTitle>
                             <CardDescription className="text-slate-600 text-lg">
-                                O Simulador de IRS 2025 está disponível apenas para membros registados.
+                                {/* Hardcoded for now, or add key */}
+                                {t('description')}
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4 pt-4">
                             <p className="text-slate-600 text-center leading-relaxed">
-                                Cria a tua conta gratuita para simular o teu imposto, guardar cenários ilimitados e otimizar a tua carga fiscal.
+                                {t('loginToAccess')}
                             </p>
                             <div className="grid grid-cols-3 gap-2 text-center text-xs text-slate-500 mt-4">
                                 <div className="bg-slate-50 p-2 rounded">
                                     <span className="block font-semibold text-emerald-600">Grátis</span>
-                                    Simulações
+                                    {t('freeSimulations')}
                                 </div>
                                 <div className="bg-slate-50 p-2 rounded">
                                     <span className="block font-semibold text-emerald-600">2025</span>
-                                    Regras Oficiais
+                                    {t('officialRules')}
                                 </div>
                                 <div className="bg-slate-50 p-2 rounded">
                                     <span className="block font-semibold text-emerald-600">Histórico</span>
-                                    Guardar
+                                    {t('saveHistory')}
                                 </div>
                             </div>
                         </CardContent>
                         <CardFooter className="flex flex-col gap-3 justify-center pb-8 px-8">
                             <Button asChild className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20 h-12 text-base font-semibold">
-                                <a href="/login">Entrar ou Criar Conta</a>
+                                <a href="/login">{t('loginToAccess')}</a>
                             </Button>
                         </CardFooter>
                     </Card>
@@ -110,8 +113,8 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
                 <CardHeader>
                     <div className="flex justify-between items-center">
                         <div>
-                            <CardTitle className="text-xl text-slate-800">Simulador IRS 2025</CardTitle>
-                            <CardDescription className="text-slate-500">Estima o teu imposto anual final.</CardDescription>
+                            <CardTitle className="text-xl text-slate-800">{t('title')}</CardTitle>
+                            <CardDescription className="text-slate-500">{t('description')}</CardDescription>
                         </div>
                         {user && (
                             <Button
@@ -119,7 +122,7 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
                                 size="icon"
                                 onClick={handleSubmit(handleSave)}
                                 disabled={isSaving}
-                                title="Guardar Simulação"
+                                title={t('saveSimulation')}
                                 className="text-slate-400 hover:text-emerald-600"
                             >
                                 {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
@@ -132,30 +135,30 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
                     <div className="space-y-4">
                         <Label className="text-base font-semibold text-slate-900 flex items-center gap-2">
                             <Euro className="w-4 h-4 text-emerald-500" />
-                            Rendimentos
+                            {t('grossIncome')}
                         </Label>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label className="text-slate-600">Rendimento Bruto Anual</Label>
+                                <Label className="text-slate-600">{t('grossIncome')}</Label>
                                 <Input type="number" {...register('annualGrossIncome', { valueAsNumber: true })} />
                             </div>
                             <div className="space-y-2">
-                                <Label className="text-slate-600">Tipo de Rendimento</Label>
+                                <Label className="text-slate-600">{t('incomeType')}</Label>
                                 <Select onValueChange={(v: string) => setValue('incomeType', v as 'A' | 'B')} defaultValue={values.incomeType}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Selecione" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="A">Trabalho Dependente (Cat. A)</SelectItem>
-                                        <SelectItem value="B">Recibos Verdes (Cat. B)</SelectItem>
+                                        <SelectItem value="A">{t('incomeTypeA')}</SelectItem>
+                                        <SelectItem value="B">{t('incomeTypeB')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                         </div>
 
                         <div className="space-y-2">
-                            <Label className="text-slate-600">Retenção na Fonte (Já pago)</Label>
+                            <Label className="text-slate-600">{t('withholdingTax')}</Label>
                             <Input type="number" {...register('withholdingTax', { valueAsNumber: true })} placeholder="Total retido durante o ano" />
                         </div>
                     </div>
@@ -166,24 +169,24 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
                     <div className="space-y-4">
                         <Label className="text-base font-semibold text-slate-900 flex items-center gap-2">
                             <Users className="w-4 h-4 text-emerald-500" />
-                            Agregado Familiar
+                            {t('household')}
                         </Label>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label className="text-slate-600">Estado Civil</Label>
+                                <Label className="text-slate-600">{t('maritalStatus')}</Label>
                                 <Select onValueChange={(v: string) => setValue('status', v as 'single' | 'married')} defaultValue={values.status}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Selecione" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="single">Solteiro / Divorciado</SelectItem>
-                                        <SelectItem value="married">Casado / Unido de Facto</SelectItem>
+                                        <SelectItem value="single">{t('single')}</SelectItem>
+                                        <SelectItem value="married">{t('married')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div className="space-y-2">
-                                <Label className="text-slate-600">Dependentes</Label>
+                                <Label className="text-slate-600">{t('dependents')}</Label>
                                 <Input type="number" {...register('dependents', { valueAsNumber: true })} />
                             </div>
                         </div>
@@ -195,12 +198,12 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
                     <div className="space-y-4">
                         <Label className="text-base font-semibold text-slate-900 flex items-center gap-2">
                             <PiggyBank className="w-4 h-4 text-emerald-500" />
-                            Despesas Dedutíveis
+                            {t('deductibleExpenses')}
                         </Label>
                         <div className="space-y-2">
-                            <Label className="text-slate-600">Total Despesas (e-fatura)</Label>
-                            <Input type="number" {...register('expenses', { valueAsNumber: true })} placeholder="Saúde, Educação, Imóveis..." />
-                            <p className="text-xs text-slate-400">Soma das deduções à coleta estimadas</p>
+                            <Label className="text-slate-600">{t('deductibleExpenses')}</Label>
+                            <Input type="number" {...register('expenses', { valueAsNumber: true })} placeholder={t('expensesPlaceholder')} />
+                            <p className="text-xs text-slate-400">{t('expensesHint')}</p>
                         </div>
                     </div>
                 </CardContent>
@@ -219,7 +222,7 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
                         <div>
                             <div className="flex items-baseline gap-2">
                                 <span className={`text-4xl font-bold tracking-tight ${result.amountToPay > 0 ? 'text-red-400' : 'text-emerald-400'}`}>
-                                    {result.amountToPay > 0 ? "A Pagar" : "A Receber"}
+                                    {result.amountToPay > 0 ? t('resultToPay') : t('resultToReceive')}
                                 </span>
                             </div>
                             <span className="text-5xl font-bold text-white block mt-2">
@@ -229,25 +232,25 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
 
                         <div className="space-y-3 pt-6 border-t border-slate-800">
                             <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Rendimento Coletável</span>
+                                <span className="text-slate-500">{t('taxableIncome')}</span>
                                 <span className="text-slate-300 font-mono">
                                     {new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(result.taxableIncome)}
                                 </span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Imposto Total (Coleta)</span>
+                                <span className="text-slate-500">{t('totalTax')}</span>
                                 <span className="text-slate-300 font-mono">
                                     {new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(result.totalTax)}
                                 </span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Imposto Líquido</span>
+                                <span className="text-slate-500">{t('netTax')}</span>
                                 <span className="text-slate-300 font-mono">
                                     {new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(result.netTax)}
                                 </span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-slate-500">Taxa Efetiva</span>
+                                <span className="text-slate-500">{t('effectiveRate')}</span>
                                 <span className="text-emerald-400 font-mono">
                                     {(result.effectiveRate * 100).toFixed(1)}%
                                 </span>
