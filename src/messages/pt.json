@@ -1,4 +1,9 @@
 {
+    "Footer": {
+        "privacy": "Política de Privacidade",
+        "refund": "Política de Reembolso",
+        "rights": "© 2026 ContabiliPT. Todos os direitos reservados."
+    },
     "HomePage": {
         "title": "Bem-vindo à Contabilipt",
         "subtitle": "Contabilidade específica para freelancers em Portugal",
@@ -82,6 +87,27 @@
         "freeSimulations": "Simulações Grátis",
         "officialRules": "Regras Oficiais",
         "saveHistory": "Guardar Histórico"
+    },
+    "RefundPolicy": {
+        "title": "Política de Reembolso",
+        "lastUpdated": "Última Atualização: Janeiro 2026",
+        "intro": "Na ContabiliPT, esforçamo-nos para garantir a sua satisfação com os nossos serviços de subscrição.",
+        "section1Title": "1. Serviços de Subscrição",
+        "section1Content": "Se não estiver satisfeito com a sua subscrição Premium, pode solicitar o reembolso total no prazo de 14 dias após a compra inicial. Sem perguntas. Após este período, pode cancelar a subscrição a qualquer momento para evitar cobranças futuras, mas pagamentos anteriores não são reembolsáveis.",
+        "section2Title": "2. Cancelamento",
+        "section2Content": "Pode cancelar a sua subscrição a qualquer momento através do seu painel. O seu acesso continuará até ao final do período de faturação atual.",
+        "contact": "Para solicitar um reembolso, contacte-nos em support@contabilipt.com"
+    },
+    "PrivacyPolicy": {
+        "title": "Política de Privacidade",
+        "lastUpdated": "Última Atualização: Janeiro 2026",
+        "intro": "A sua privacidade é importante para nós. Esta política descreve como tratamos os seus dados em conformidade com o RGPD.",
+        "section1Title": "1. Recolha de Dados",
+        "section1Content": "Recolhemos as informações necessárias para prestar serviços de simulação fiscal e contabilidade, incluindo, mas não se limitando a, detalhes de rendimentos e categorização de despesas.",
+        "section2Title": "2. Utilização de Dados",
+        "section2Content": "Os seus dados são utilizados exclusivamente para gerar simulações fiscais precisas e prestar os serviços solicitados. Não vendemos os seus dados a terceiros.",
+        "section3Title": "3. Segurança e RGPD",
+        "section3Content": "Utilizamos encriptação padrão da indústria para proteger as suas informações financeiras sensíveis. De acordo com o RGPD, tem o direito de aceder, retificar ou eliminar os seus dados pessoais a qualquer momento."
     },
     "Calculator": {
         "title": "Teus Dados",

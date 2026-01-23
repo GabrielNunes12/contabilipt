@@ -54,10 +54,7 @@ async function HomeContent() {
         </div>
       </section>
 
-      {/* Footer / Trust */}
-      <section className="py-12 text-center text-slate-500 text-sm">
-        <p>{t('disclaimer')}</p>
-      </section>
+
     </main>
   );
 }
