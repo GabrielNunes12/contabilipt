@@ -87,7 +87,13 @@
         "loginToAccess": "Entrar ou Criar Conta",
         "freeSimulations": "Simulações Grátis",
         "officialRules": "Regras Oficiais",
-        "saveHistory": "Guardar Histórico"
+        "saveHistory": "Guardar Histórico",
+        "disclaimerMain": "Cálculo estimativo para 2025. Assume residência no Continente.",
+        "disclaimerB": "Para Recibos Verdes, aplica o coeficiente de 0.75 sobre o rendimento bruto.",
+        "errorPayment": "Erro ao iniciar pagamento.",
+        "premiumRequired": "Funcionalidade Premium",
+        "premiumDescription": "Acesso ilimitado ao simulador de IRS e muito mais.",
+        "upgradeBtn": "Tornar-se Premium"
     },
     "RefundPolicy": {
         "title": "Política de Reembolso",
@@ -146,6 +152,7 @@
         "betterStay": "Neste nível de faturação, manter **Recibos Verdes** compensa mais.",
         "successSave": "Simulação guardada com sucesso!",
         "errorSave": "Erro ao guardar.",
-        "errorPayment": "Erro de conexão."
+        "errorPayment": "Erro de conexão.",
+        "loginToUnlock": "Entrar para Desbloquear"
     }
 }

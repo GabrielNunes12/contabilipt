@@ -161,14 +161,24 @@ export function Calculator({ user }: CalculatorProps) {
                 <Card className={cn("border-2 relative overflow-hidden transition-all duration-500",
                     user?.isPremium ? "bg-white border-emerald-500/50 shadow-emerald-500/10 shadow-xl" : "bg-slate-50/50 border-slate-200 border-dashed"
                 )}>
-                    {!user?.isPremium && (
+                    {(!user || !user.isPremium) && (
                         <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-6 text-center">
                             <h3 className="text-lg font-bold text-slate-800 mb-2">{t('upsellTitle')}</h3>
                             <p className="text-slate-500 text-sm mb-4 max-w-[200px]">{t('upsellDesc')}</p>
-                            <Button onClick={handleBuy} variant="default" size="lg" className="shadow-lg shadow-emerald-500/20 animate-pulse bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8">
-                                <Lock className="w-4 h-4 mr-2" />
-                                {t('upsellBtn')}
-                            </Button>
+
+                            {!user ? (
+                                <Button asChild variant="default" size="lg" className="shadow-lg shadow-emerald-500/20 animate-pulse bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8">
+                                    <a href="/login">
+                                        <Lock className="w-4 h-4 mr-2" />
+                                        {t('loginToUnlock')}
+                                    </a>
+                                </Button>
+                            ) : (
+                                <Button onClick={handleBuy} variant="default" size="lg" className="shadow-lg shadow-emerald-500/20 animate-pulse bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8">
+                                    <Lock className="w-4 h-4 mr-2" />
+                                    {t('upsellBtn')}
+                                </Button>
+                            )}
                         </div>
                     )}
                     <CardHeader className="bg-emerald-50/30 border-b border-emerald-100/50 pb-4">

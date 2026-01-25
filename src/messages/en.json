@@ -87,7 +87,13 @@
         "loginToAccess": "Login or Create Account",
         "freeSimulations": "Free Simulations",
         "officialRules": "Official Rules",
-        "saveHistory": "Save History"
+        "saveHistory": "Save History",
+        "disclaimerMain": "Estimated calculation for 2025. Assumes residence in Mainland Portugal.",
+        "disclaimerB": "For Independent Workers, applies 0.75 coefficient on gross income.",
+        "errorPayment": "Error starting payment.",
+        "premiumRequired": "Premium Feature",
+        "premiumDescription": "Unlimited access to IRS simulator and more.",
+        "upgradeBtn": "Upgrade to Premium"
     },
     "RefundPolicy": {
         "title": "Refund Policy",
@@ -146,6 +152,7 @@
         "betterStay": "At this billing level, staying as **Freelancer** pays more.",
         "successSave": "Simulation saved successfully!",
         "errorSave": "Error saving.",
-        "errorPayment": "Connection error."
+        "errorPayment": "Connection error.",
+        "loginToUnlock": "Login to Unlock"
     }
 }

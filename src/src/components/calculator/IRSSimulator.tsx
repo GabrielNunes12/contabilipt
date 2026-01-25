@@ -49,7 +49,27 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
         }
     };
 
-    if (!user) {
+    const handleUpgrade = async () => {
+        try {
+            const response = await fetch('/api/stripe/checkout', {
+                method: 'POST',
+            });
+            const data = await response.json();
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                console.error("Stripe Error:", data.error);
+                alert(t('errorPayment'));
+            }
+        } catch (error) {
+            console.error("Payment Error:", error);
+            alert(t('errorPayment'));
+        }
+    };
+
+    if (!user || !user.isPremium) {
+        const isPremiumLocked = !!user && !user.isPremium;
+
         return (
             <div className="relative">
                 {/* Blurred Content Placeholder */}
@@ -70,15 +90,16 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
                             <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4 shadow-inner">
                                 <Lock className="w-8 h-8 text-emerald-600" />
                             </div>
-                            <CardTitle className="text-2xl font-bold text-slate-900">{t('exclusiveAccess')}</CardTitle>
+                            <CardTitle className="text-2xl font-bold text-slate-900">
+                                {isPremiumLocked ? t('premiumRequired') : t('exclusiveAccess')}
+                            </CardTitle>
                             <CardDescription className="text-slate-600 text-lg">
-                                {/* Hardcoded for now, or add key */}
-                                {t('description')}
+                                {isPremiumLocked ? t('premiumDescription') : t('description')}
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4 pt-4">
                             <p className="text-slate-600 text-center leading-relaxed">
-                                {t('loginToAccess')}
+                                {isPremiumLocked ? t('premiumDescription') : t('loginToAccess')}
                             </p>
                             <div className="grid grid-cols-3 gap-2 text-center text-xs text-slate-500 mt-4">
                                 <div className="bg-slate-50 p-2 rounded">
@@ -96,8 +117,16 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
                             </div>
                         </CardContent>
                         <CardFooter className="flex flex-col gap-3 justify-center pb-8 px-8">
-                            <Button asChild className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20 h-12 text-base font-semibold">
-                                <a href="/login">{t('loginToAccess')}</a>
+                            <Button
+                                asChild={!isPremiumLocked}
+                                onClick={isPremiumLocked ? handleUpgrade : undefined}
+                                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20 h-12 text-base font-semibold"
+                            >
+                                {isPremiumLocked ? (
+                                    <span>{t('upgradeBtn')}</span>
+                                ) : (
+                                    <a href="/login">{t('loginToAccess')}</a>
+                                )}
                             </Button>
                         </CardFooter>
                     </Card>
@@ -261,8 +290,8 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
                             <div className="flex items-start gap-2">
                                 <Info className="w-4 h-4 mt-0.5 shrink-0" />
                                 <p>
-                                    Cálculo estimativo para 2025. Assume residência no Continente.
-                                    {values.incomeType === 'B' && " Para Recibos Verdes, aplica o coeficiente de 0.75 sobre o rendimento bruto."}
+                                    {t('disclaimerMain')}
+                                    {values.incomeType === 'B' && ` ${t('disclaimerB')}`}
                                 </p>
                             </div>
                         </div>
