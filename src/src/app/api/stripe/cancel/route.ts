@@ -1,6 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { createClient } from '@supabase/supabase-js';
 import { getCurrentUser } from '@/services/auth/server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -33,12 +34,20 @@ export async function POST(request: Request) {
         // We cancel the first active subscription found (assuming one per user for now)
         const subscriptionId = subscriptions.data[0].id;
 
-        await stripe.subscriptions.update(subscriptionId, {
-            cancel_at_period_end: true
-        });
+        // Immediate cancellation for testing/demo purposes
+        await stripe.subscriptions.cancel(subscriptionId);
 
-        // Or if immediate cancellation is requested:
-        // await stripe.subscriptions.cancel(subscriptionId);
+        // Directly update the database to reflect the change immediately
+        // (bypassing reliance on webhooks which may not be configured for localhost)
+        const supabaseAdmin = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!
+        );
+
+        await supabaseAdmin
+            .from('profiles')
+            .update({ is_premium: false })
+            .eq('id', user.id);
 
         return NextResponse.json({ success: true });
 
