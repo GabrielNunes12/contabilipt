@@ -1,0 +1,32 @@
+
+> web@0.1.0 build /vercel/sandbox/primary/src
+> next build
+
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+▲ Next.js 16.1.4 (Turbopack)
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 13.0s
+  Running TypeScript ...
+  Collecting page data using 1 worker ...
+Error: Neither apiKey nor config.authenticator provided
+    at r._setAuthenticator (.next/server/chunks/[root-of-the-server]__979ef0ae._.js:1:125828)
+    at new r (.next/server/chunks/[root-of-the-server]__979ef0ae._.js:1:120431)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__fbc7c161._.js:1:1907)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:740:9)
+    at instantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:768:12)
+    at getOrInstantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:781:12)
+    at Object.m (.next/server/chunks/[turbopack]_runtime.js:790:18)
+    at Object.<anonymous> (.next/server/app/api/stripe/cancel/route.js:9:3)
+
+> Build error occurred
+Error: Failed to collect page data for /api/stripe/cancel
+    at ignore-listed frames {
+  type: 'Error'
+}
+ ELIFECYCLE  Command failed with exit code 1.
