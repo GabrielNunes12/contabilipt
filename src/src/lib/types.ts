@@ -16,6 +16,9 @@ export interface CalculatorInput {
     // Scenario Comparison (Employee)
     employeeGrossSalary?: number; // Monthly Gross
     employeeMealAllowance?: number; // Daily Value
+
+    // VAT & Client Location
+    clientLocation?: 'pt' | 'eu' | 'world';
 }
 
 export interface TaxBreakdown {

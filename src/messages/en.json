@@ -69,6 +69,7 @@
         "vatLimitWarning": "Warning: VAT Exemption Limit",
         "vatExceededDesc": "Your estimated annual income ({val1}€) {status} the exemption limit of {val2}€. {extra}",
         "vatExtraExceeded": "You will have to charge VAT starting February of the following year or immediately if you crossed the registration threshold.",
+        "vatExceededInternational": "Limit exceeded. For international clients, 'Reverse Charge' applies (No VAT).",
         "simplifiedLimitExceeded": "Simplified Regime Limit Exceeded",
         "simplifiedLimitWarning": "Warning: Simplified Regime Limit",
         "simplifiedExceededDesc": "You are {status} the ceiling of {val}€ for the Simplified Regime. Organized Accounting may become mandatory.",
@@ -93,7 +94,16 @@
         "eventVATPaymentTitle": "VAT Payment",
         "eventVATPaymentDesc": "Payment of calculated tax.",
         "eventIRSRetentionTitle": "IRS Payment (Retention)",
-        "eventIRSRetentionDesc": "Delivery of withheld amounts."
+        "eventIRSRetentionDesc": "Delivery of withheld amounts.",
+        "fiscalCalendarDesc": "All tax obligations for the year.",
+        "eventsCount": "{count} events",
+        "closeCalendar": "Close Calendar",
+        "noEvents": "No upcoming obligations this year.",
+        "netIncomeEvolution": "Net Income Evolution",
+        "monthlyComparison": "Monthly comparison: Freelancer vs Company",
+        "freelancerNet": "Freelancer (Net)",
+        "companyNet": "Company (Net)",
+        "noHistory": "No history available. Save a simulation to see the chart."
     },
     "IRSSimulator": {
         "title": "IRS Simulator 2025",
@@ -212,6 +222,11 @@
         "upgradeToView": "See Company Optimization",
         "unlockComparison": "Unlock Comparison",
         "loginToCompare": "Login to compare with your current salary.",
-        "loginToAccess": "Login to Access"
+        "loginToAccess": "Login to Access",
+        "clientLocationLabel": "Client Location",
+        "clientLocationPt": "Portugal (National)",
+        "clientLocationEu": "European Union",
+        "clientLocationWorld": "World (USA, UK, BR...)",
+        "clientLocationDesc": "Defines VAT rules (Reverse Charge vs 23%)."
     }
 }

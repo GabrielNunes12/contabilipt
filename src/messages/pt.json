@@ -69,6 +69,7 @@
         "vatLimitWarning": "Atenção ao Limite de Isenção de IVA",
         "vatExceededDesc": "A tua faturação anual estimada ({val1}€) {status} do limite de isenção de {val2}€. {extra}",
         "vatExtraExceeded": "Terás de cobrar IVA a partir de Fevereiro do ano seguinte ou imediatamente se ultrapassaste o limiar de cadastro.",
+        "vatExceededInternational": "Ultrapassaste o limite. Para clientes internacionais aplica-se 'Reverse Charge' (Sem IVA).",
         "simplifiedLimitExceeded": "Limite Regime Simplificado Ultrapassado",
         "simplifiedLimitWarning": "Atenção ao Limite do Regime Simplificado",
         "simplifiedExceededDesc": "Estás {status} do teto de {val}€ para o Regime Simplificado. A Contabilidade Organizada pode tornar-se obrigatória.",
@@ -93,7 +94,16 @@
         "eventVATPaymentTitle": "Pagamento IVA",
         "eventVATPaymentDesc": "Pagamento do imposto apurado.",
         "eventIRSRetentionTitle": "Pagamento IRS (Retenção)",
-        "eventIRSRetentionDesc": "Entrega dos valores retidos."
+        "eventIRSRetentionDesc": "Entrega dos valores retidos.",
+        "fiscalCalendarDesc": "Todas as obrigações fiscais do ano.",
+        "eventsCount": "{count} eventos",
+        "closeCalendar": "Fechar Calendário",
+        "noEvents": "Sem obrigações próximas este ano.",
+        "netIncomeEvolution": "Evolução do Rendimento Líquido",
+        "monthlyComparison": "Comparativo mensal: Freelancer vs Empresa",
+        "freelancerNet": "Freelancer (Líquido)",
+        "companyNet": "Empresa (Líquido)",
+        "noHistory": "Sem histórico disponível. Guarda uma simulação para veres o gráfico."
     },
     "IRSSimulator": {
         "title": "Simulador IRS 2025",
@@ -212,6 +222,11 @@
         "upgradeToView": "Ver Otimização Empresa",
         "unlockComparison": "Desbloquear Comparação",
         "loginToCompare": "Entra para comparar com o teu salário atual.",
-        "loginToAccess": "Entrar para Aceder"
+        "loginToAccess": "Entrar para Aceder",
+        "clientLocationLabel": "Localização do Cliente",
+        "clientLocationPt": "Portugal (Nacional)",
+        "clientLocationEu": "União Europeia",
+        "clientLocationWorld": "Mundo (EUA, UK, BR...)",
+        "clientLocationDesc": "Define a regra de IVA (Autoliquidação vs 23%)."
     }
 }

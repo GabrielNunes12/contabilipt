@@ -5,17 +5,25 @@ import { SavedSimulation } from "@/services/simulation/types";
 import { FISCAL_LIMITS_2025 } from "@/config/tax-rates";
 
 interface TaxBracketAlertProps {
-    data: SavedSimulation[];
+    data?: SavedSimulation[];
+    annualIncome?: number;
+    clientLocation?: 'pt' | 'eu' | 'world';
 }
 
 import { useTranslations } from 'next-intl';
 
-export function TaxBracketAlert({ data }: TaxBracketAlertProps) {
+export function TaxBracketAlert({ data, annualIncome: propIncome, clientLocation = 'pt' }: TaxBracketAlertProps) {
     const t = useTranslations('Dashboard');
-    if (!data || data.length === 0) return null;
 
-    const current = data[data.length - 1];
-    const annualIncome = current.daily_rate * current.days_per_month * current.months_per_year;
+    let annualIncome = 0;
+    if (propIncome) {
+        annualIncome = propIncome;
+    } else if (data && data.length > 0) {
+        const current = data[data.length - 1];
+        annualIncome = current.daily_rate * current.days_per_month * current.months_per_year;
+    } else {
+        return null;
+    }
 
     // Thresholds (2025)
     // const VAT_LIMIT = 15000;
@@ -53,6 +61,12 @@ export function TaxBracketAlert({ data }: TaxBracketAlertProps) {
         );
     }
 
+    // Custom Logic for International Clients
+    const isInternational = clientLocation === 'eu' || clientLocation === 'world';
+    const vatExtraText = isInternational && vatStatus === 'exceeded'
+        ? t('vatExceededInternational')
+        : (vatStatus === 'exceeded' ? t('vatExtraExceeded') : '');
+
     return (
         <div className="space-y-4 mt-8">
             {/* VAT Alert */}
@@ -71,7 +85,7 @@ export function TaxBracketAlert({ data }: TaxBracketAlertProps) {
                                     val1: annualIncome.toLocaleString('pt-PT'),
                                     status: vatStatus === 'exceeded' ? t('statusExceeded') : t('statusNear'),
                                     val2: VAT_EXEMPTION.toLocaleString('pt-PT'),
-                                    extra: vatStatus === 'exceeded' ? t('vatExtraExceeded') : ''
+                                    extra: vatExtraText
                                 })}
                             </p>
                         </div>

@@ -37,6 +37,7 @@ export function Calculator({ user }: CalculatorProps) {
             customAccountantCost: 150,
             employeeGrossSalary: 2500,
             employeeMealAllowance: 9.60,
+            clientLocation: 'world',
         }
     });
 
@@ -118,7 +119,20 @@ export function Calculator({ user }: CalculatorProps) {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2 pt-4 border-t border-slate-100">
+                        <Label className="text-slate-600 font-medium">{t('clientLocationLabel')}</Label>
+                        <select
+                            className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                            {...register('clientLocation')}
+                        >
+                            <option value="pt">{t('clientLocationPt')}</option>
+                            <option value="eu">{t('clientLocationEu')}</option>
+                            <option value="world">{t('clientLocationWorld')}</option>
+                        </select>
+                        <p className="text-xs text-slate-400">{t('clientLocationDesc')}</p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100">
                         <div className="space-y-2">
                             <Label className="text-slate-600 font-medium">{t('daysPerMonth')}</Label>
                             <Input type="number" className="border-slate-200 focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500 text-slate-800" {...register('workDaysPerMonth', { valueAsNumber: true })} />
