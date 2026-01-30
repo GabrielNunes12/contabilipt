@@ -244,7 +244,7 @@ export function IRSSimulator({ user }: IRSSimulatorProps) {
                     <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 blur-3xl rounded-full pointer-events-none -mr-20 -mt-20" />
 
                     <CardHeader className="pb-2 relative z-10">
-                        <CardTitle className="text-sm font-medium text-slate-400 uppercase tracking-wider">Resultado da Liquidação</CardTitle>
+                        <CardTitle className="text-sm font-medium text-slate-400 uppercase tracking-wider">{t('liquidationResult')}</CardTitle>
                     </CardHeader>
 
                     <CardContent className="relative z-10 space-y-6">

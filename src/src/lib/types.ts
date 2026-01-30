@@ -6,6 +6,16 @@ export interface CalculatorInput {
     workDaysPerMonth: number;
     monthsPerYear: number;
     businessExpenses: number; // Annual expenses (software, hardware, travel)
+    isNHR?: boolean; // Non-Habitual Resident status
+    municipalityBenefit?: number; // Percentage (0-5)
+
+    // Optimization Inputs
+    includeMealAllowance?: boolean; // If true, adds max tax-free meal allowance to net income (Company side)
+    customAccountantCost?: number; // Override default 150
+
+    // Scenario Comparison (Employee)
+    employeeGrossSalary?: number; // Monthly Gross
+    employeeMealAllowance?: number; // Daily Value
 }
 
 export interface TaxBreakdown {

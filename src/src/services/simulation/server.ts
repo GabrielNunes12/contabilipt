@@ -4,21 +4,10 @@
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentUser } from '@/services/auth/server';
 
-export async function saveSimulation(data: {
-    dailyRate: number,
-    workDaysPerMonth: number,
-    monthsPerYear: number,
-    businessExpenses: number
-}) {
-    const user = await getCurrentUser();
+import { CalculatorInput } from '@/lib/types';
 
-    // Dev Mode Bypass: If no user, just pretend we saved it (or use a mock ID if needed later)
-    /*
-    if (!user && process.env.NODE_ENV === 'development') {
-        console.log("Dev Mode: Bypassing saveSimulation auth check (Mock Save)");
-        return { success: true };
-    }
-    */
+export async function saveSimulation(data: CalculatorInput) {
+    const user = await getCurrentUser();
 
     if (!user) return { success: false, error: "Unauthorized" };
 
@@ -32,6 +21,12 @@ export async function saveSimulation(data: {
             days_per_month: data.workDaysPerMonth,
             months_per_year: data.monthsPerYear,
             expenses: data.businessExpenses,
+            is_nhr: data.isNHR,
+            municipality_benefit: data.municipalityBenefit,
+            include_meal_allowance: data.includeMealAllowance,
+            custom_accountant_cost: data.customAccountantCost,
+            employee_gross_salary: data.employeeGrossSalary,
+            employee_meal_allowance: data.employeeMealAllowance,
             title: `Simulação ${new Date().toLocaleDateString('pt-PT')}`
         });
 

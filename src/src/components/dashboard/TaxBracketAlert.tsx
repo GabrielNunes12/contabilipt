@@ -8,7 +8,10 @@ interface TaxBracketAlertProps {
     data: SavedSimulation[];
 }
 
+import { useTranslations } from 'next-intl';
+
 export function TaxBracketAlert({ data }: TaxBracketAlertProps) {
+    const t = useTranslations('Dashboard');
     if (!data || data.length === 0) return null;
 
     const current = data[data.length - 1];
@@ -40,9 +43,9 @@ export function TaxBracketAlert({ data }: TaxBracketAlertProps) {
                         <CheckCircle className="w-6 h-6 text-emerald-600" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-semibold text-slate-900">Situação Fiscal Saudável</h3>
+                        <h3 className="text-lg font-semibold text-slate-900">{t('fiscalHealth')}</h3>
                         <p className="text-slate-500 mt-1">
-                            Estás dentro dos limites do Regime de Isenção de IVA ({FISCAL_LIMITS_2025.VAT_EXEMPTION / 1000}k€) e do Regime Simplificado ({FISCAL_LIMITS_2025.SIMPLIFIED_REGIME / 1000}k€).
+                            {t('fiscalHealthDesc', { val1: VAT_EXEMPTION / 1000, val2: SIMPLIFIED_REGIME / 1000 })}
                         </p>
                     </div>
                 </div>
@@ -61,11 +64,15 @@ export function TaxBracketAlert({ data }: TaxBracketAlertProps) {
                         </div>
                         <div>
                             <h3 className={`text-lg font-semibold ${vatStatus === 'exceeded' ? 'text-red-900' : 'text-amber-900'}`}>
-                                {vatStatus === 'exceeded' ? 'Limite IVA Ultrapassado' : 'Atenção ao Limite de Isenção de IVA'}
+                                {vatStatus === 'exceeded' ? t('vatLimitExceeded') : t('vatLimitWarning')}
                             </h3>
                             <p className={`${vatStatus === 'exceeded' ? 'text-red-700' : 'text-amber-700'} mt-1`}>
-                                A tua faturação anual estimada ({annualIncome.toLocaleString('pt-PT')}€) {vatStatus === 'exceeded' ? 'excede' : 'está próxima'} do limite de isenção de {FISCAL_LIMITS_2025.VAT_EXEMPTION.toLocaleString('pt-PT')}€.
-                                {vatStatus === 'exceeded' && " Terás de cobrar IVA a partir de Fevereiro do ano seguinte ou imediatamente se ultrapassaste o limiar de cadastro."}
+                                {t('vatExceededDesc', {
+                                    val1: annualIncome.toLocaleString('pt-PT'),
+                                    status: vatStatus === 'exceeded' ? t('statusExceeded') : t('statusNear'),
+                                    val2: VAT_EXEMPTION.toLocaleString('pt-PT'),
+                                    extra: vatStatus === 'exceeded' ? t('vatExtraExceeded') : ''
+                                })}
                             </p>
                         </div>
                     </div>
@@ -81,10 +88,13 @@ export function TaxBracketAlert({ data }: TaxBracketAlertProps) {
                         </div>
                         <div>
                             <h3 className={`text-lg font-semibold ${simplifiedStatus === 'exceeded' ? 'text-red-900' : 'text-amber-900'}`}>
-                                {simplifiedStatus === 'exceeded' ? 'Limite Regime Simplificado Ultrapassado' : 'Atenção ao Limite do Regime Simplificado'}
+                                {simplifiedStatus === 'exceeded' ? t('simplifiedLimitExceeded') : t('simplifiedLimitWarning')}
                             </h3>
                             <p className={`${simplifiedStatus === 'exceeded' ? 'text-red-700' : 'text-amber-700'} mt-1`}>
-                                Estás {simplifiedStatus === 'exceeded' ? 'acima' : 'próximo'} do teto de {FISCAL_LIMITS_2025.SIMPLIFIED_REGIME.toLocaleString('pt-PT')}€ para o Regime Simplificado. A Contabilidade Organizada pode tornar-se obrigatória.
+                                {t('simplifiedExceededDesc', {
+                                    status: simplifiedStatus === 'exceeded' ? t('statusAbove') : t('statusClose'),
+                                    val: SIMPLIFIED_REGIME.toLocaleString('pt-PT')
+                                })}
                             </p>
                         </div>
                     </div>
