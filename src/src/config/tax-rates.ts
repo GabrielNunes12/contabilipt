@@ -28,6 +28,9 @@ export const TAX_RATES_2024 = {
     // Cost Assumptions
     ACCOUNTANT_MONTHLY: 150,
     INSURANCE_WORK_ACCIDENTS: 200, // Annual estimate
+
+    // Optimizations
+    MEAL_ALLOWANCE_MAX_CARD: 9.60, // Max tax-free daily value (Card)
 };
 
 export const BUSINESS_DEFAULTS = {

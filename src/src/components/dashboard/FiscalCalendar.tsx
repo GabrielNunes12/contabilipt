@@ -9,34 +9,39 @@ interface TaxEvent {
     type: 'vat' | 'ss' | 'irs';
 }
 
-const TAX_EVENTS: TaxEvent[] = [
-    {
-        title: "Pagamento Segurança Social",
-        date: "20-current",
-        description: "Pagamento da contribuição mensal.",
-        type: 'ss'
-    },
-    {
-        title: "Declaração Periódica IVA",
-        date: "20-dummy", // Logic handles quarterly/monthly
-        description: "Entrega da declaração trimestral.",
-        type: 'vat'
-    },
-    {
-        title: "Pagamento IVA",
-        date: "25-dummy",
-        description: "Pagamento do imposto apurado.",
-        type: 'vat'
-    },
-    {
-        title: "Pagamento IRS (Retenção)",
-        date: "20-current",
-        description: "Entrega dos valores retidos.",
-        type: 'irs'
-    }
-];
+// Moved inside component to use translations
+
+import { useTranslations } from 'next-intl';
 
 export function FiscalCalendar() {
+    const t = useTranslations('Dashboard');
+
+    const TAX_EVENTS: TaxEvent[] = [
+        {
+            title: t('eventSSPaymentTitle'),
+            date: "20-current",
+            description: t('eventSSPaymentDesc'),
+            type: 'ss'
+        },
+        {
+            title: t('eventVATPeriodicTitle'),
+            date: "20-dummy",
+            description: t('eventVATPeriodicDesc'),
+            type: 'vat'
+        },
+        {
+            title: t('eventVATPaymentTitle'),
+            date: "25-dummy",
+            description: t('eventVATPaymentDesc'),
+            type: 'vat'
+        },
+        {
+            title: t('eventIRSRetentionTitle'),
+            date: "20-current",
+            description: t('eventIRSRetentionDesc'),
+            type: 'irs'
+        }
+    ];
     const today = new Date();
     const currentDay = today.getDate();
     const currentMonth = today.getMonth(); // 0-indexed
@@ -69,17 +74,17 @@ export function FiscalCalendar() {
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
             <div className="flex items-center gap-2 mb-6">
                 <CalendarDays className="w-5 h-5 text-emerald-600" />
-                <h3 className="text-lg font-semibold text-slate-800">Calendário Fiscal</h3>
+                <h3 className="text-lg font-semibold text-slate-800">{t('fiscalCalendarTitle')}</h3>
             </div>
 
             <div className="space-y-4">
                 {upcomingEvents.map((event, idx) => (
                     <div key={idx} className={`flex items-start gap-4 p-3 rounded-lg border ${event.status === 'urgent' ? 'bg-amber-50 border-amber-200' :
-                            event.status === 'done' ? 'bg-slate-50 border-slate-100 opacity-60' :
-                                'bg-white border-slate-100'
+                        event.status === 'done' ? 'bg-slate-50 border-slate-100 opacity-60' :
+                            'bg-white border-slate-100'
                         }`}>
                         <div className={`mt-1 w-2 h-2 rounded-full ${event.type === 'vat' ? 'bg-purple-500' :
-                                event.type === 'ss' ? 'bg-blue-500' : 'bg-emerald-500'
+                            event.type === 'ss' ? 'bg-blue-500' : 'bg-emerald-500'
                             }`} />
 
                         <div className="flex-1">
@@ -101,7 +106,7 @@ export function FiscalCalendar() {
 
             <div className="mt-4 pt-4 border-t border-slate-100 text-center">
                 <button className="text-sm text-emerald-600 font-medium hover:text-emerald-700">
-                    Ver Calendário Completo
+                    {t('viewFullCalendar')}
                 </button>
             </div>
         </div>

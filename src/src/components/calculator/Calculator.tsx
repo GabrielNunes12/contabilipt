@@ -8,10 +8,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { calculateRecibosVerdes, calculateUnipessoal } from '@/lib/calculator';
+import { calculateRecibosVerdes, calculateUnipessoal, calculateDependentWork } from '@/lib/calculator';
 import { CalculatorInput } from '@/lib/types';
 import { BUSINESS_DEFAULTS } from '@/config/tax-rates';
-import { Euro, ArrowRight, Lock, Unlock, FileDown, Save } from 'lucide-react';
+import { Euro, ArrowRight, Lock, Unlock, FileDown, Save, Building2, Palmtree, Utensils, Calculator as CalcIcon, Briefcase, Users, Target } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { AuthUser } from '@/services/auth/types';
 import { cn } from '@/lib/utils';
@@ -30,16 +30,30 @@ export function Calculator({ user }: CalculatorProps) {
             dailyRate: 350,
             workDaysPerMonth: BUSINESS_DEFAULTS.WORK_DAYS_MONTH,
             monthsPerYear: BUSINESS_DEFAULTS.MONTHS_YEAR,
-            businessExpenses: 0
+            businessExpenses: 0,
+            isNHR: false,
+            municipalityBenefit: 0,
+            includeMealAllowance: true,
+            customAccountantCost: 150,
+            employeeGrossSalary: 2500,
+            employeeMealAllowance: 9.60,
         }
     });
 
     const values = watch();
     const rvResult = calculateRecibosVerdes(values);
     const uniResult = calculateUnipessoal(values);
+    const depResult = calculateDependentWork(values);
+
+    // Winner logic
+    const results = [
+        { id: 'employee', net: depResult.netAnnual, title: t('scenarioEmployee') },
+        { id: 'freelancer', net: rvResult.netAnnual, title: t('scenarioFreelancer') },
+        { id: 'company', net: uniResult.netAnnual, title: t('scenarioCompany') }
+    ];
+    const winner = results.reduce((prev, current) => (prev.net > current.net) ? prev : current);
 
     const savings = uniResult.netAnnual - rvResult.netAnnual;
-    const isUniBetter = savings > 0;
 
     const handleSave = async () => {
         if (!user) return;
@@ -49,6 +63,10 @@ export function Calculator({ user }: CalculatorProps) {
         } else {
             alert(t('errorSave'));
         }
+    };
+
+    const handleLogin = () => {
+        router.push('/login');
     };
 
     const handleBuy = async () => {
@@ -122,101 +140,232 @@ export function Calculator({ user }: CalculatorProps) {
                         />
                         <p className="text-xs text-slate-400">{t('expensesHint')}</p>
                     </div>
+
+                    {/* Advanced Tax Settings */}
+                    <div className="pt-4 border-t border-slate-100 space-y-4">
+                        <Label className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                            <Building2 className="w-4 h-4 text-emerald-500" />
+                            {t('taxAdjustments')}
+                        </Label>
+
+                        <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50/50">
+                            <div className="space-y-0.5">
+                                <Label htmlFor="nhr" className="text-base font-medium text-slate-700 cursor-pointer flex items-center gap-2">
+                                    <Palmtree className="w-4 h-4 text-emerald-600" />
+                                    {t('nhrLabel')}
+                                </Label>
+                                <p className="text-xs text-slate-500">{t('nhrDesc')}</p>
+                            </div>
+                            <input
+                                type="checkbox"
+                                id="nhr"
+                                {...register('isNHR')}
+                                className="w-5 h-5 text-emerald-600 rounded focus:ring-emerald-500 border-gray-300"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <div className="flex justify-between">
+                                <Label htmlFor="municipality" className="text-slate-600 font-medium">{t('municipalityLabel')}</Label>
+                                <span className="text-sm font-mono text-emerald-600">{values.municipalityBenefit || 0}%</span>
+                            </div>
+                            <Input
+                                id="municipality"
+                                type="range"
+                                min="0"
+                                max="5"
+                                step="0.5"
+                                className="accent-emerald-600 cursor-pointer"
+                                {...register('municipalityBenefit', { valueAsNumber: true })}
+                            />
+                            <p className="text-xs text-slate-400">{t('municipalityHelp')}</p>
+                        </div>
+                    </div>
+
+                    {/* Company Optimization Settings */}
+                    <div className="pt-4 border-t border-slate-100 space-y-4">
+                        <Label className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                            <CalcIcon className="w-4 h-4 text-emerald-500" />
+                            {t('optimizationTitle')}
+                        </Label>
+
+                        <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50/50">
+                            <div className="space-y-0.5">
+                                <Label htmlFor="mealAllowance" className="text-base font-medium text-slate-700 cursor-pointer flex items-center gap-2">
+                                    <Utensils className="w-4 h-4 text-emerald-600" />
+                                    {t('mealAllowanceLabel')}
+                                </Label>
+                                <p className="text-xs text-slate-500 max-w-[200px]">{t('mealAllowanceDesc')}</p>
+                            </div>
+                            <input
+                                type="checkbox"
+                                id="mealAllowance"
+                                {...register('includeMealAllowance')}
+                                className="w-5 h-5 text-emerald-600 rounded focus:ring-emerald-500 border-gray-300"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="accountant" className="text-slate-600 font-medium">{t('accountantLabel')}</Label>
+                            <div className="relative">
+                                <Euro className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                                <Input
+                                    id="accountant"
+                                    type="number"
+                                    className="pl-9 border-slate-200"
+                                    {...register('customAccountantCost', { valueAsNumber: true })}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </CardContent>
             </Card>
 
-            {/* Results Section */}
-            <div className="space-y-6">
-                <Card className="bg-slate-900 border-slate-800 shadow-xl overflow-hidden relative">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-3xl rounded-full pointer-events-none -mr-10 -mt-10" />
-                    <CardHeader className="pb-2 relative z-10">
-                        <CardTitle className="text-sm font-medium text-slate-400 uppercase tracking-wider">{t('resultTitle')}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="relative z-10">
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-5xl font-bold tracking-tight text-white">
+            {/* Scenario A Input (Employee Baseline) */}
+            <Card className="w-full shadow-lg border-slate-200 bg-white/50 backdrop-blur-sm relative overflow-hidden">
+                {!user && (
+                    <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-4 text-center">
+                        <Lock className="w-8 h-8 text-slate-400 mb-2" />
+                        <h3 className="font-semibold text-slate-800 mb-1">{t('unlockComparison')}</h3>
+                        <p className="text-sm text-slate-500 mb-3 max-w-[200px]">{t('loginToCompare')}</p>
+                        <Button size="sm" onClick={handleLogin} className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg">
+                            {t('loginToAccess')}
+                        </Button>
+                    </div>
+                )}
+                <CardHeader>
+                    <CardTitle className="text-xl text-slate-800 flex items-center gap-2">
+                        <Briefcase className="w-5 h-5 text-blue-500" />
+                        {t('scenarioEmployeeTitle')}
+                    </CardTitle>
+                    <CardDescription>{t('scenarioEmployeeDesc')}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div className="space-y-2">
+                        <Label htmlFor="grossSalary" className="text-slate-600 font-medium">{t('grossSalaryLabel')}</Label>
+                        <div className="relative">
+                            <Euro className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                            <Input
+                                id="grossSalary"
+                                type="number"
+                                className="pl-9 border-slate-200"
+                                {...register('employeeGrossSalary', { valueAsNumber: true })}
+                            />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="empMeal" className="text-slate-600 font-medium">{t('mealAllowanceDailyLabel')}</Label>
+                        <div className="relative">
+                            <Utensils className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                            <Input
+                                id="empMeal"
+                                type="number"
+                                step="0.1"
+                                className="pl-9 border-slate-200"
+                                {...register('employeeMealAllowance', { valueAsNumber: true })}
+                            />
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Results Section (3-Column Grid) */}
+            <div className="md:col-span-2 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Scenario A: Employee */}
+                    <Card className={cn("border-2 transition-all relative overflow-hidden", winner.id === 'employee' ? "border-blue-500 shadow-blue-500/10 shadow-lg bg-blue-50/10" : "border-slate-200 bg-white")}>
+                        {!user && (
+                            <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-4 text-center">
+                                <Lock className="w-8 h-8 text-slate-400 mb-2" />
+                                <Button size="sm" onClick={handleLogin} className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg">
+                                    {t('loginToAccess')}
+                                </Button>
+                            </div>
+                        )}
+                        <CardHeader className={cn(!user && "opacity-50")}>
+                            <CardTitle className="text-lg text-slate-700 flex items-center gap-2">
+                                <Briefcase className="w-5 h-5 text-blue-500" />
+                                {t('scenarioEmployee')}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className={cn(!user && "opacity-50 blur-sm")}>
+                            <div className="text-3xl font-bold text-slate-800">
+                                {new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(depResult.netMonthly)}
+                                <span className="text-sm font-normal text-slate-400 ml-1">{t('perMonth')}</span>
+                            </div>
+                            <div className="mt-4 text-sm text-slate-500">
+                                <div className="flex justify-between py-1 border-b border-slate-100">
+                                    <span>{t('grossAnnual')}</span>
+                                    <span className="font-medium">{new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(depResult.grossAnnual)}</span>
+                                </div>
+                                <div className="flex justify-between py-1 mt-1 text-red-500">
+                                    <span>{t('taxes')}</span>
+                                    <span>-{new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(depResult.ss + depResult.irs)}</span>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Scenario B: Freelancer */}
+                    <Card className={cn("border-2 transition-all", winner.id === 'freelancer' ? "border-emerald-500 shadow-emerald-500/10 shadow-lg bg-emerald-50/10" : "border-slate-200 bg-white")}>
+                        <CardHeader>
+                            <CardTitle className="text-lg text-slate-700 flex items-center gap-2">
+                                <Users className="w-5 h-5 text-emerald-500" />
+                                {t('scenarioFreelancer')}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className={cn(!user && "opacity-50 blur-sm")}>
+                            <div className="text-3xl font-bold text-slate-800">
                                 {new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(rvResult.netMonthly)}
-                            </span>
-                            <span className="text-lg text-slate-500">{t('perMonth')}</span>
-                        </div>
-
-                        <div className="mt-6 pt-6 border-t border-slate-800 grid grid-cols-2 gap-8 text-sm">
-                            <div>
-                                <p className="text-slate-500 mb-1">{t('grossAnnual')}</p>
-                                <p className="font-medium text-slate-200 text-lg">
-                                    {new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(rvResult.grossAnnual)}
-                                </p>
+                                <span className="text-sm font-normal text-slate-400 ml-1">{t('perMonth')}</span>
                             </div>
-                            <div>
-                                <p className="text-slate-500 mb-1">{t('totalTax')}</p>
-                                <p className="font-medium text-red-400/90 text-lg">
-                                    -{new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(rvResult.ss + rvResult.irs)}
-                                </p>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Premium Teaser (Upsell) */}
-                <Card className={cn("border-2 relative overflow-hidden transition-all duration-500",
-                    user?.isPremium ? "bg-white border-emerald-500/50 shadow-emerald-500/10 shadow-xl" : "bg-slate-50/50 border-slate-200 border-dashed"
-                )}>
-                    {(!user || !user.isPremium) && (
-                        <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-6 text-center">
-                            <h3 className="text-lg font-bold text-slate-800 mb-2">{t('upsellTitle')}</h3>
-                            <p className="text-slate-500 text-sm mb-4 max-w-[200px]">{t('upsellDesc')}</p>
-
-                            {!user ? (
-                                <Button asChild variant="default" size="lg" className="shadow-lg shadow-emerald-500/20 animate-pulse bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8">
-                                    <a href="/login">
-                                        <Lock className="w-4 h-4 mr-2" />
-                                        {t('loginToUnlock')}
-                                    </a>
-                                </Button>
-                            ) : (
-                                <Button onClick={handleBuy} variant="default" size="lg" className="shadow-lg shadow-emerald-500/20 animate-pulse bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8">
-                                    <Lock className="w-4 h-4 mr-2" />
-                                    {t('upsellBtn')}
-                                </Button>
-                            )}
-                        </div>
-                    )}
-                    <CardHeader className="bg-emerald-50/30 border-b border-emerald-100/50 pb-4">
-                        <CardTitle className="flex items-center gap-2 text-slate-800">
-                            {user?.isPremium ? <Unlock className="w-5 h-5 text-emerald-500" /> : <Lock className="w-5 h-5 text-slate-400" />}
-                            <span className="font-bold">{t('optimizedScenario')}</span>
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className={cn("pt-6", !user?.isPremium ? "blur-sm select-none opacity-50" : "")}>
-                        <div className="space-y-5">
-                            <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-slate-100 shadow-sm">
-                                <span className="text-slate-600 font-medium">{t('uniNet')}</span>
-                                <span className={cn("font-bold text-2xl", isUniBetter ? "text-emerald-600" : "text-slate-600")}>
-                                    {new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(uniResult.netMonthly)}
-                                    <span className="text-xs font-normal text-slate-400 ml-1">{t('perMonth')}</span>
-                                </span>
-                            </div>
-
-                            {isUniBetter ? (
-                                <div className="flex justify-between items-center p-4 bg-emerald-50 rounded-lg border border-emerald-100">
-                                    <div className="flex flex-col">
-                                        <span className="font-bold text-emerald-900">{t('annualSavings')}</span>
-                                        <span className="text-xs text-emerald-600 font-medium uppercase tracking-wide">{t('moneyInPocket')}</span>
-                                    </div>
-                                    <span className="font-bold text-2xl text-emerald-600">
-                                        +{new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(savings)}
-                                    </span>
+                            <div className="mt-4 text-sm text-slate-500">
+                                <div className="flex justify-between py-1 border-b border-slate-100">
+                                    <span>{t('grossAnnual')}</span>
+                                    <span className="font-medium">{new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(rvResult.grossAnnual)}</span>
                                 </div>
-                            ) : (
-                                <div className="p-4 bg-amber-50 rounded-lg border border-amber-100 text-amber-800 text-sm">
-                                    {t.rich('betterStay', {
-                                        strong: (chunks) => <strong>{chunks}</strong>
-                                    })}
+                                <div className="flex justify-between py-1 mt-1 text-red-500">
+                                    <span>{t('taxes')}</span>
+                                    <span>-{new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(rvResult.ss + rvResult.irs)}</span>
                                 </div>
-                            )}
-                        </div>
-                    </CardContent>
-                </Card>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Scenario C: Company */}
+                    <Card className={cn("border-2 transition-all relative overflow-hidden", winner.id === 'company' ? "border-purple-500 shadow-purple-500/10 shadow-lg bg-purple-50/10" : "border-slate-200 bg-white")}>
+                        {!user?.isPremium && (
+                            <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-4 text-center">
+                                <Lock className="w-8 h-8 text-slate-400 mb-2" />
+                                <Button size="sm" onClick={handleBuy} className="bg-purple-600 hover:bg-purple-700 text-white shadow-lg">
+                                    {t('upgradeToView')}
+                                </Button>
+                            </div>
+                        )}
+                        <CardHeader>
+                            <CardTitle className="text-lg text-slate-700 flex items-center gap-2">
+                                <Building2 className="w-5 h-5 text-purple-500" />
+                                {t('scenarioCompany')}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className={cn(!user?.isPremium && "blur-sm opacity-50")}>
+                            <div className="text-3xl font-bold text-slate-800">
+                                {new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(uniResult.netMonthly)}
+                                <span className="text-sm font-normal text-slate-400 ml-1">{t('perMonth')}</span>
+                            </div>
+                            <div className="mt-4 text-sm text-slate-500">
+                                <div className="flex justify-between py-1 border-b border-slate-100">
+                                    <span>{t('grossAnnual')}</span>
+                                    <span className="font-medium">{new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(uniResult.grossAnnual)}</span>
+                                </div>
+                                <div className="flex justify-between py-1 mt-1 text-red-500">
+                                    <span>{t('taxes')}</span>
+                                    <span>-{new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(uniResult.ss + uniResult.irs)}</span>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
         </div>
     );
