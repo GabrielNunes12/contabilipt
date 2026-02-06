@@ -6,6 +6,7 @@ export interface CalculatorInput {
     workDaysPerMonth: number;
     monthsPerYear: number;
     businessExpenses: number; // Annual expenses (software, hardware, travel)
+    regime?: string; // 'freelancer' | 'company' | 'employee'
     isNHR?: boolean; // Non-Habitual Resident status
     municipalityBenefit?: number; // Percentage (0-5)
 

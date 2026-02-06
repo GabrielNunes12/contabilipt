@@ -27,6 +27,7 @@ export async function saveSimulation(data: CalculatorInput) {
             custom_accountant_cost: data.customAccountantCost,
             employee_gross_salary: data.employeeGrossSalary,
             employee_meal_allowance: data.employeeMealAllowance,
+            regime: data.regime, // Saves specific regime (freelancer, company, employee)
             title: `Simulação ${new Date().toLocaleDateString('pt-PT')}`
         });
 

@@ -8,6 +8,8 @@ import { FiscalCalendar } from '@/components/dashboard/FiscalCalendar';
 import { TaxBracketAlert } from '@/components/dashboard/TaxBracketAlert';
 import { ExpenseOptimizationWidget } from '@/components/dashboard/ExpenseOptimizationWidget';
 import { SubscriptionManager } from '@/components/dashboard/SubscriptionManager';
+import { SafeToSpendWidget } from '@/components/dashboard/SafeToSpendWidget';
+import { ExpenseRadar } from '@/components/dashboard/ExpenseRadar';
 import { getTranslations } from 'next-intl/server';
 
 export default async function DashboardPage() {
@@ -53,22 +55,26 @@ export default async function DashboardPage() {
                 <DashboardStats data={simulations} />
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Main Chart Column */}
-                    <div className="lg:col-span-2">
+                    {/* Main Chart Column (2/3 width) */}
+                    <div className="lg:col-span-2 space-y-8">
                         <RateHistoryChart data={simulations} />
 
-                        {/* Tax Bracket Alert */}
-                        <div className="mt-8">
-                            <TaxBracketAlert data={simulations} />
+                        {/* Premium Widgets Grid - Side by Side below chart */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <SafeToSpendWidget data={simulations} />
+                            <ExpenseRadar data={simulations} />
                         </div>
+
+                        {/* Tax Bracket Alert */}
+                        <TaxBracketAlert data={simulations} />
                     </div>
 
-                    {/* Sidebar Column */}
+                    {/* Sidebar Column (1/3 width) */}
                     <div className="space-y-8">
                         <SubscriptionManager isPremium={user.isPremium} />
                         <FiscalCalendar />
 
-                        {/* Expense Optimization */}
+                        {/* Keep the general advice widget here as a secondary tip */}
                         <ExpenseOptimizationWidget data={simulations} />
                     </div>
                 </div>

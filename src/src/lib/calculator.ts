@@ -102,6 +102,29 @@ export function calculateRecibosVerdes(input: CalculatorInput): TaxBreakdown {
     };
 }
 
+export function calculateHardwareCost(priceIncVAT: number) {
+    const taxBase = priceIncVAT / 1.23;
+    const vat = priceIncVAT - taxBase;
+
+    // IRC Savings: 
+    // Small Company (17% on first 50k - simplified assumption for target audience)
+    // Depreciation reduces profit -> reduces tax base.
+    const ircRate = 0.17;
+    const ircSaving = taxBase * ircRate;
+
+    const companyRealCost = priceIncVAT - vat - ircSaving;
+    const individualCost = priceIncVAT;
+
+    return {
+        price: priceIncVAT,
+        vatRecov: vat,
+        ircSaving: ircSaving,
+        companyRealCost: companyRealCost,
+        individualCost: individualCost,
+        totalSavings: individualCost - companyRealCost
+    };
+}
+
 /**
  * Calculates the Unipessoal Taxes (Simulated Optimization)
  */

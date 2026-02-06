@@ -7,5 +7,8 @@ export interface SavedSimulation {
     days_per_month: number;
     months_per_year: number;
     expenses: number;
+    regime?: string;
+    employee_gross_salary?: number;
+    employee_meal_allowance?: number;
     created_at: string;
 }

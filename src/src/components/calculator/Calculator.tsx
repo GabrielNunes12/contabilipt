@@ -58,7 +58,9 @@ export function Calculator({ user }: CalculatorProps) {
 
     const handleSave = async () => {
         if (!user) return;
-        const result = await saveSimulation(values);
+        // Include the winner regime in the saved data
+        const dataToSave = { ...values, regime: winner.id };
+        const result = await saveSimulation(dataToSave);
         if (result.success) {
             alert(t('successSave'));
         } else {
