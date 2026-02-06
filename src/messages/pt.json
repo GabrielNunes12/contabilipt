@@ -213,9 +213,6 @@
         "upgradeToView": "Ver Otimização Empresa",
         "unlockComparison": "Desbloquear Comparação",
         "loginToCompare": "Entra para comparar com o teu salário atual.",
-<<<<<<< Updated upstream
-        "loginToAccess": "Entrar para Aceder"
-=======
         "loginToAccess": "Entrar para Aceder",
         "clientLocationLabel": "Localização do Cliente",
         "clientLocationPt": "Portugal (Nacional)",
@@ -238,6 +235,5 @@
         "switcherDesc": "Compara o Rendimento Líquido com base nas despesas anuais. O ponto de viragem é aprox.",
         "legendSimplified": "Recibos Verdes (Simplificado)",
         "legendOrganized": "Empresa (Contabilidade)"
->>>>>>> Stashed changes
     }
 }

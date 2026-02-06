@@ -213,9 +213,6 @@
         "upgradeToView": "See Company Optimization",
         "unlockComparison": "Unlock Comparison",
         "loginToCompare": "Login to compare with your current salary.",
-<<<<<<< Updated upstream
-        "loginToAccess": "Login to Access"
-=======
         "loginToAccess": "Login to Access",
         "clientLocationLabel": "Client Location",
         "clientLocationPt": "Portugal (National)",
@@ -238,6 +235,5 @@
         "switcherDesc": "Compare Net Income based on annual expenses. The turning point is approx.",
         "legendSimplified": "Freelancer (Simplified)",
         "legendOrganized": "Company (Organized)"
->>>>>>> Stashed changes
     }
 }
