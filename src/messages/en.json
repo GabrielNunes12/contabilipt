@@ -9,7 +9,7 @@
         "title": "Welcome to Contabilipt",
         "subtitle": "Accounting specific for freelancers in Portugal",
         "heroTitle": "Contractor in Portugal?",
-        "heroSubtitle": "Optimize your taxes.",
+        "heroSubtitle": "Net Income Optimization.",
         "heroDescription": "Advanced tax simulator for tech professionals with international clients. Compare regimes, forecast costs, and maximize your net income.",
         "tabCalculator": "Freelancer vs Company",
         "tabIRS": "IRS Simulator 2025",
@@ -198,6 +198,7 @@
         "municipalityLabel": "Municipal IRS Return",
         "municipalityHelp": "0% to 5% benefit returned by municipality.",
         "optimizationTitle": "Company Optimization",
+        "optimizationDesc": "Configure your company costs and benefits.",
         "mealAllowanceLabel": "Meal Allowance",
         "mealAllowanceDesc": "Pay max tax-free amount (card) to reduce Corporate Tax and increase Net.",
         "accountantLabel": "Monthly Accountant Cost (€)",
@@ -212,6 +213,31 @@
         "upgradeToView": "See Company Optimization",
         "unlockComparison": "Unlock Comparison",
         "loginToCompare": "Login to compare with your current salary.",
+<<<<<<< Updated upstream
         "loginToAccess": "Login to Access"
+=======
+        "loginToAccess": "Login to Access",
+        "clientLocationLabel": "Client Location",
+        "clientLocationPt": "Portugal (National)",
+        "clientLocationEu": "European Union",
+        "clientLocationWorld": "World (USA, UK, BR...)",
+        "clientLocationDesc": "Defines VAT rules (Reverse Charge vs 23%).",
+        "salaryTitle": "Processed Salary",
+        "salaryBase": "Base (IAS)",
+        "salaryMax": "Max",
+        "salaryDesc": "Define your monthly salary.",
+        "premiumBadge": "Premium",
+        "perksTitle": "Tax-Free Perks",
+        "kmsLabel": "Own Vehicle KMs",
+        "kmsDesc": "Km/month (0.40€)",
+        "healthLabel": "Health Insurance",
+        "educationLabel": "Education Vouchers",
+        "pprLabel": "Company PPR (Annual)",
+        "monthly": "Monthly (€)",
+        "switcherTitle": "Regime Battle: Simplified vs Organized",
+        "switcherDesc": "Compare Net Income based on annual expenses. The turning point is approx.",
+        "legendSimplified": "Freelancer (Simplified)",
+        "legendOrganized": "Company (Organized)"
+>>>>>>> Stashed changes
     }
 }

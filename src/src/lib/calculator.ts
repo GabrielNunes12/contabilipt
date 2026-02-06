@@ -110,10 +110,24 @@ export function calculateUnipessoal(input: CalculatorInput): TaxBreakdown {
     const grossAnnual = dailyRate * workDaysPerMonth * monthsPerYear;
 
     // 1. Costs
-    // Salary (IAS) - Standard strategy to minimize TSU
-    const annualSalaryCost = TAX_RATES_2024.IAS * 14; // 14 months
+    // Salary (IAS or Custom) - Standard strategy to minimize TSU
+    // Default to IAS (Indexante dos Apoios Sociais) if not specified
+    const salaryBase = input.ownerSalary ?? TAX_RATES_2024.IAS;
+    const annualSalaryCost = salaryBase * 14;
+
     const tsuCompany = annualSalaryCost * TAX_RATES_2024.TSU_COMPANY;
-    const tsuWorker = annualSalaryCost * TAX_RATES_2024.TSU_WORKER; // Paid by worker, but deducted from salary
+    const tsuWorker = annualSalaryCost * TAX_RATES_2024.TSU_WORKER; // Paid by worker (deducted from salary)
+
+    // IRS on Owner Salary (Category A logic)
+    // We reuse the simplified IRS logic for Category A to estimate retention/tax
+    // Specific deduction for Category A
+    const specificDeduction = Math.max(IRS_VARS_2025.SPECIFIC_DEDUCTION_CATEGORY_A_UPDATED, tsuWorker);
+    const taxableBaseSalary = Math.max(0, annualSalaryCost - specificDeduction);
+    const { totalTax: salaryIRS } = calculateSimplifiedIRS(taxableBaseSalary, false);
+
+    // Personal Deductions on Salary IRS (Standard ~1300)
+    const personalDeductions = 1300;
+    const netSalaryIRS = Math.max(0, salaryIRS - personalDeductions);
 
     const accountantCost = (input.customAccountantCost ?? TAX_RATES_2024.ACCOUNTANT_MONTHLY) * 12;
     const otherExpenses = businessExpenses + TAX_RATES_2024.INSURANCE_WORK_ACCIDENTS;
@@ -127,7 +141,18 @@ export function calculateUnipessoal(input: CalculatorInput): TaxBreakdown {
         mealAllowanceYearly = annualDays * TAX_RATES_2024.MEAL_ALLOWANCE_MAX_CARD;
     }
 
-    const totalCompanyCosts = annualSalaryCost + tsuCompany + accountantCost + otherExpenses + mealAllowanceYearly;
+    // Perks & Benefits (Ajudas de Custo)
+    // These are treated as Company Costs (reducing IRC) and Tax-Free Income for the Owner (Net Efficiency)
+    // Assumption: User inputs valid legal amounts for specific contexts (e.g. Map of KMs)
+    const kmRate = 0.40; // 2025 Limit for own vehicle
+    const annualKMs = (input.kilometers || 0) * kmRate * monthsPerYear;
+    const annualHealth = (input.healthInsurance || 0) * 12;
+    const annualEducation = (input.educationVouchers || 0) * monthsPerYear;
+    const annualPPR = (input.ppr || 0);
+
+    const totalPerks = annualKMs + annualHealth + annualEducation + annualPPR;
+
+    const totalCompanyCosts = annualSalaryCost + tsuCompany + accountantCost + otherExpenses + mealAllowanceYearly + totalPerks;
 
     // 2. Profit (Lucro Tributável)
     const profit = Math.max(0, grossAnnual - totalCompanyCosts);
@@ -154,17 +179,15 @@ export function calculateUnipessoal(input: CalculatorInput): TaxBreakdown {
     const netDividend = netProfit - dividendTax;
 
     // 5. Total Net for the Person
-    // Net Salary (Salary - TSU Worker - IRS on Salary)
-    // Simplified IRS on Minimum Wage (IAS) is usually 0 or very low. 
-    // Let's assume 0 for IAS-based salary for simplicity or minimal retention.
-    const netSalary = annualSalaryCost - tsuWorker; // Ignoring IRS on min wage for now
+    // Net Salary = Gross - TSU - IRS
+    const netSalary = annualSalaryCost - tsuWorker - netSalaryIRS;
 
-    const totalNetAnnual = netSalary + netDividend + mealAllowanceYearly;
+    const totalNetAnnual = netSalary + netDividend + mealAllowanceYearly + totalPerks;
 
     return {
         grossAnnual,
         ss: tsuCompany + tsuWorker, // Total SS paid
-        irs: totalIRC + dividendTax, // Total Tax paid (IRC + Dividend Tax)
+        irs: totalIRC + dividendTax + netSalaryIRS, // Total Tax paid (IRC + Dividend Tax + IRS on Salary)
         netAnnual: totalNetAnnual,
         netMonthly: totalNetAnnual / 12,
         effectiveTaxRate: 1 - (totalNetAnnual / grossAnnual)

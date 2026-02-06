@@ -9,7 +9,7 @@
         "title": "Bem-vindo à Contabilipt",
         "subtitle": "Contabilidade específica para freelancers em Portugal",
         "heroTitle": "Contractor em Portugal?",
-        "heroSubtitle": "Otimiza os teus impostos.",
+        "heroSubtitle": "Otimização de Rendimento Líquido.",
         "heroDescription": "Simulador fiscal avançado para profissionais de tecnologia com clientes internacionais. Compara regimes, prevê custos e maximiza o teu rendimento líquido.",
         "tabCalculator": "Freelancer vs Empresa",
         "tabIRS": "Simulador IRS 2025",
@@ -198,6 +198,7 @@
         "municipalityLabel": "Devolução Municipal IRS",
         "municipalityHelp": "Benefício de 0% a 5% devolvido pelo município.",
         "optimizationTitle": "Otimização Empresa",
+        "optimizationDesc": "Configura os custos e benefícios da tua empresa.",
         "mealAllowanceLabel": "Subsídio de Alimentação",
         "mealAllowanceDesc": "Pagar o máximo isento (cartão) para reduzir IRC e aumentar líquido.",
         "accountantLabel": "Custo Contabilista Mensal (€)",
@@ -212,6 +213,31 @@
         "upgradeToView": "Ver Otimização Empresa",
         "unlockComparison": "Desbloquear Comparação",
         "loginToCompare": "Entra para comparar com o teu salário atual.",
+<<<<<<< Updated upstream
         "loginToAccess": "Entrar para Aceder"
+=======
+        "loginToAccess": "Entrar para Aceder",
+        "clientLocationLabel": "Localização do Cliente",
+        "clientLocationPt": "Portugal (Nacional)",
+        "clientLocationEu": "União Europeia",
+        "clientLocationWorld": "Mundo (EUA, UK, BR...)",
+        "clientLocationDesc": "Define a regra de IVA (Autoliquidação vs 23%).",
+        "salaryTitle": "Salário Processado",
+        "salaryBase": "Base (IAS)",
+        "salaryMax": "Max",
+        "salaryDesc": "Defina o teu salário mensal.",
+        "premiumBadge": "Premium",
+        "perksTitle": "Ajudas de Custo (Isento)",
+        "kmsLabel": "KMs Viatura Própria",
+        "kmsDesc": "Km/mês (0.40€)",
+        "healthLabel": "Seguro Saúde",
+        "educationLabel": "Vales Educação",
+        "pprLabel": "PPR Empresa (Anual)",
+        "monthly": "Mensal (€)",
+        "switcherTitle": "Batalha de Regimes: Simplificado vs Contabilidade",
+        "switcherDesc": "Compara o Rendimento Líquido com base nas despesas anuais. O ponto de viragem é aprox.",
+        "legendSimplified": "Recibos Verdes (Simplificado)",
+        "legendOrganized": "Empresa (Contabilidade)"
+>>>>>>> Stashed changes
     }
 }

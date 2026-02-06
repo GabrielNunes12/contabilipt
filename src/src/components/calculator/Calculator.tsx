@@ -10,11 +10,12 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { calculateRecibosVerdes, calculateUnipessoal, calculateDependentWork } from '@/lib/calculator';
 import { CalculatorInput } from '@/lib/types';
-import { BUSINESS_DEFAULTS } from '@/config/tax-rates';
-import { Euro, ArrowRight, Lock, Unlock, FileDown, Save, Building2, Palmtree, Utensils, Calculator as CalcIcon, Briefcase, Users, Target } from 'lucide-react';
+import { BUSINESS_DEFAULTS, TAX_RATES_2024 } from '@/config/tax-rates';
+import { Euro, ArrowRight, Lock, Unlock, FileDown, Save, Building2, Palmtree, Utensils, Calculator as CalcIcon, Briefcase, Users, Target, Car, Heart, GraduationCap, PiggyBank, TrendingUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { AuthUser } from '@/services/auth/types';
 import { cn } from '@/lib/utils';
+import { RegimeSwitcher } from './RegimeSwitcher';
 import { saveSimulation } from '@/services/simulation/server';
 import { useTranslations } from 'next-intl';
 
@@ -182,39 +183,154 @@ export function Calculator({ user }: CalculatorProps) {
                         </div>
                     </div>
 
-                    {/* Company Optimization Settings */}
-                    <div className="pt-4 border-t border-slate-100 space-y-4">
-                        <Label className="text-sm font-semibold text-slate-900 flex items-center gap-2">
-                            <CalcIcon className="w-4 h-4 text-emerald-500" />
-                            {t('optimizationTitle')}
-                        </Label>
 
-                        <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50/50">
-                            <div className="space-y-0.5">
-                                <Label htmlFor="mealAllowance" className="text-base font-medium text-slate-700 cursor-pointer flex items-center gap-2">
-                                    <Utensils className="w-4 h-4 text-emerald-600" />
-                                    {t('mealAllowanceLabel')}
-                                </Label>
-                                <p className="text-xs text-slate-500 max-w-[200px]">{t('mealAllowanceDesc')}</p>
-                            </div>
-                            <input
-                                type="checkbox"
-                                id="mealAllowance"
-                                {...register('includeMealAllowance')}
-                                className="w-5 h-5 text-emerald-600 rounded focus:ring-emerald-500 border-gray-300"
+                </CardContent>
+            </Card>
+
+            {/* Company Optimization Settings - New Card */}
+            <Card className="w-full shadow-lg border-slate-200 bg-white/50 backdrop-blur-sm">
+                <CardHeader>
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <CardTitle className="text-xl text-slate-800 flex items-center gap-2">
+                                <Building2 className="w-5 h-5 text-purple-600" />
+                                {t('optimizationTitle')}
+                            </CardTitle>
+                            <CardDescription className="text-slate-500">{t('optimizationDesc')}</CardDescription>
+                        </div>
+                    </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50/50">
+                        <div className="space-y-0.5">
+                            <Label htmlFor="mealAllowance" className="text-base font-medium text-slate-700 cursor-pointer flex items-center gap-2">
+                                <Utensils className="w-4 h-4 text-emerald-600" />
+                                {t('mealAllowanceLabel')}
+                            </Label>
+                            <p className="text-xs text-slate-500 max-w-[200px]">{t('mealAllowanceDesc')}</p>
+                        </div>
+                        <input
+                            type="checkbox"
+                            id="mealAllowance"
+                            {...register('includeMealAllowance')}
+                            className="w-5 h-5 text-emerald-600 rounded focus:ring-emerald-500 border-gray-300"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="accountant" className="text-slate-600 font-medium">{t('accountantLabel')}</Label>
+                        <div className="relative">
+                            <Euro className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                            <Input
+                                id="accountant"
+                                type="number"
+                                className="pl-9 border-slate-200"
+                                {...register('customAccountantCost', { valueAsNumber: true })}
                             />
                         </div>
+                    </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="accountant" className="text-slate-600 font-medium">{t('accountantLabel')}</Label>
-                            <div className="relative">
-                                <Euro className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
-                                <Input
-                                    id="accountant"
-                                    type="number"
-                                    className="pl-9 border-slate-200"
-                                    {...register('customAccountantCost', { valueAsNumber: true })}
-                                />
+                    {/* Perks Section */}
+                    <div className="pt-4 border-t border-slate-100 space-y-4">
+                        <Label className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                            <TrendingUp className="w-4 h-4 text-emerald-500" />
+                            {t('perksTitle')}
+                        </Label>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="kms" className="text-slate-600 font-medium text-xs">{t('kmsLabel')}</Label>
+                                <div className="relative">
+                                    <Car className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                                    <Input
+                                        id="kms"
+                                        type="number"
+                                        placeholder={t('kmsDesc')}
+                                        className="pl-9 border-slate-200 text-sm"
+                                        {...register('kilometers', { valueAsNumber: true })}
+                                    />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="health" className="text-slate-600 font-medium text-xs">{t('healthLabel')}</Label>
+                                <div className="relative">
+                                    <Heart className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                                    <Input
+                                        id="health"
+                                        type="number"
+                                        placeholder={t('monthly')}
+                                        className="pl-9 border-slate-200 text-sm"
+                                        {...register('healthInsurance', { valueAsNumber: true })}
+                                    />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="education" className="text-slate-600 font-medium text-xs">{t('educationLabel')}</Label>
+                                <div className="relative">
+                                    <GraduationCap className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                                    <Input
+                                        id="education"
+                                        type="number"
+                                        placeholder={t('monthly')}
+                                        className="pl-9 border-slate-200 text-sm"
+                                        {...register('educationVouchers', { valueAsNumber: true })}
+                                    />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="ppr" className="text-slate-600 font-medium text-xs">{t('pprLabel')}</Label>
+                                <div className="relative">
+                                    <PiggyBank className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                                    <Input
+                                        id="ppr"
+                                        type="number"
+                                        placeholder="€/Year"
+                                        className="pl-9 border-slate-200 text-sm"
+                                        {...register('ppr', { valueAsNumber: true })}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Salary vs Dividend Splitter (Premium) */}
+                    <div className="pt-2 border-t border-slate-100 mt-4">
+                        <div className="flex justify-between items-center mb-2">
+                            <Label className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                                <Target className="w-4 h-4 text-emerald-500" />
+                                {t('salaryTitle')}
+                            </Label>
+                            {!user?.isPremium && <Lock className="w-3 h-3 text-amber-500" />}
+                        </div>
+
+                        <div className={cn("space-y-3 p-3 border border-slate-200 rounded-lg bg-slate-50/50 relative", !user?.isPremium && "opacity-75")}>
+                            {!user?.isPremium && (
+                                <div className="absolute inset-0 z-10 cursor-not-allowed group flex items-center justify-center cursor-pointer" onClick={handleBuy}>
+                                    <div className="bg-slate-900/90 text-white text-xs py-1 px-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
+                                        {t('premiumBadge')}
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="flex justify-between text-xs text-slate-500">
+                                <span>{t('salaryBase')}</span>
+                                <span>{t('salaryMax')}</span>
+                            </div>
+                            <Input
+                                type="range"
+                                min={TAX_RATES_2024.IAS} // IAS
+                                max={5000} // Reasonable Cap
+                                step={50}
+                                defaultValue={TAX_RATES_2024.IAS}
+                                disabled={!user?.isPremium}
+                                className={cn("accent-emerald-600", !user?.isPremium ? "cursor-not-allowed" : "cursor-pointer")}
+                                {...register('ownerSalary', { valueAsNumber: true })}
+                            />
+                            <div className="flex justify-between items-center">
+                                <span className="text-xs text-slate-500">{t('salaryDesc')}</span>
+                                <span className="text-sm font-mono font-medium text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
+                                    {new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(values.ownerSalary || TAX_RATES_2024.IAS)}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -223,16 +339,7 @@ export function Calculator({ user }: CalculatorProps) {
 
             {/* Scenario A Input (Employee Baseline) */}
             <Card className="w-full shadow-lg border-slate-200 bg-white/50 backdrop-blur-sm relative overflow-hidden">
-                {!user && (
-                    <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-4 text-center">
-                        <Lock className="w-8 h-8 text-slate-400 mb-2" />
-                        <h3 className="font-semibold text-slate-800 mb-1">{t('unlockComparison')}</h3>
-                        <p className="text-sm text-slate-500 mb-3 max-w-[200px]">{t('loginToCompare')}</p>
-                        <Button size="sm" onClick={handleLogin} className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg">
-                            {t('loginToAccess')}
-                        </Button>
-                    </div>
-                )}
+
                 <CardHeader>
                     <CardTitle className="text-xl text-slate-800 flex items-center gap-2">
                         <Briefcase className="w-5 h-5 text-blue-500" />
@@ -274,21 +381,14 @@ export function Calculator({ user }: CalculatorProps) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Scenario A: Employee */}
                     <Card className={cn("border-2 transition-all relative overflow-hidden", winner.id === 'employee' ? "border-blue-500 shadow-blue-500/10 shadow-lg bg-blue-50/10" : "border-slate-200 bg-white")}>
-                        {!user && (
-                            <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-4 text-center">
-                                <Lock className="w-8 h-8 text-slate-400 mb-2" />
-                                <Button size="sm" onClick={handleLogin} className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg">
-                                    {t('loginToAccess')}
-                                </Button>
-                            </div>
-                        )}
-                        <CardHeader className={cn(!user && "opacity-50")}>
+
+                        <CardHeader>
                             <CardTitle className="text-lg text-slate-700 flex items-center gap-2">
                                 <Briefcase className="w-5 h-5 text-blue-500" />
                                 {t('scenarioEmployee')}
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className={cn(!user && "opacity-50 blur-sm")}>
+                        <CardContent>
                             <div className="text-3xl font-bold text-slate-800">
                                 {new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(depResult.netMonthly)}
                                 <span className="text-sm font-normal text-slate-400 ml-1">{t('perMonth')}</span>
@@ -314,7 +414,7 @@ export function Calculator({ user }: CalculatorProps) {
                                 {t('scenarioFreelancer')}
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className={cn(!user && "opacity-50 blur-sm")}>
+                        <CardContent>
                             <div className="text-3xl font-bold text-slate-800">
                                 {new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(rvResult.netMonthly)}
                                 <span className="text-sm font-normal text-slate-400 ml-1">{t('perMonth')}</span>
@@ -331,7 +431,6 @@ export function Calculator({ user }: CalculatorProps) {
                             </div>
                         </CardContent>
                     </Card>
-
                     {/* Scenario C: Company */}
                     <Card className={cn("border-2 transition-all relative overflow-hidden", winner.id === 'company' ? "border-purple-500 shadow-purple-500/10 shadow-lg bg-purple-50/10" : "border-slate-200 bg-white")}>
                         {!user?.isPremium && (
@@ -365,6 +464,26 @@ export function Calculator({ user }: CalculatorProps) {
                             </div>
                         </CardContent>
                     </Card>
+                    {/* Regime Switcher Chart */}
+                    <div className="md:col-span-3 relative">
+                        {!user?.isPremium && (
+                            <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-4 text-center border border-slate-200 rounded-lg">
+                                <Lock className="w-8 h-8 text-slate-400 mb-2" />
+                                <h3 className="font-semibold text-slate-800 mb-1">{t('premiumBadge')}</h3>
+                                <p className="text-sm text-slate-500 mb-3 max-w-[200px]">{t('upsellDesc')}</p>
+                                <Button size="sm" onClick={handleBuy} className="bg-purple-600 hover:bg-purple-700 text-white shadow-lg">
+                                    {t('upgradeToView')}
+                                </Button>
+                            </div>
+                        )}
+                        <div className={cn(!user?.isPremium && "opacity-20 blur-sm pointer-events-none")}>
+                            <RegimeSwitcher
+                                grossIncome={rvResult.grossAnnual}
+                                currentExpenses={values.businessExpenses}
+                                input={values}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

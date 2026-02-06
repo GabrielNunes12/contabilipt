@@ -12,6 +12,13 @@ export interface CalculatorInput {
     // Optimization Inputs
     includeMealAllowance?: boolean; // If true, adds max tax-free meal allowance to net income (Company side)
     customAccountantCost?: number; // Override default 150
+    ownerSalary?: number; // Monthly Gross Salary for Company Owner (Simulated)
+
+    // Perks
+    kilometers?: number; // KMs/month
+    healthInsurance?: number; // €/month
+    educationVouchers?: number; // €/month
+    ppr?: number; // €/year
 
     // Scenario Comparison (Employee)
     employeeGrossSalary?: number; // Monthly Gross
